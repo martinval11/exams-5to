@@ -1,0 +1,10 @@
+.table thead {
+  background: var(--table-border-color);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
