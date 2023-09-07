@@ -52,7 +52,7 @@ const Dashboard = ({ examsDB }: examProps) => {
 
 		setIsLoading("false");
 		addExamRef.current?.close();
-		setExams([...examsDB, data[0]]);
+		setExams([...exams, data[0]]);
 	};
 
 	const deleteExam = async () => {
@@ -183,7 +183,7 @@ const Dashboard = ({ examsDB }: examProps) => {
 										<td>{exam.title}</td>
 										<td>{exam.assignatures}</td>
 										<td>
-											{new Date(exam.exam_date).toLocaleDateString("en-GB") || exam.exam_date}
+											{new Date(exam.exam_date).toLocaleDateString("es-ar") || exam.exam_date}
 										</td>
 										<td>
 											<details
