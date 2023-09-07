@@ -43,6 +43,7 @@
 
 .actionsButtonContainer summary {
   padding: 0 !important;
+  display: flex;
 }
 
 .actions {
