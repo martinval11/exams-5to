@@ -41,6 +41,10 @@
   margin: 0 !important;
 }
 
+.actionsButtonContainer ul {
+  margin-left: -22px !important;
+}
+
 .actionsButtonContainer summary {
   padding: 0 !important;
   display: flex;
@@ -75,6 +79,7 @@
   color: var(--color);
 }
 
-.deleteButton, .updateButton {
+.deleteButton,
+.updateButton {
   padding: 2px 4px;
 }

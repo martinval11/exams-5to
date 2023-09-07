@@ -132,9 +132,9 @@ const Dashboard = ({ examsDB }: examProps) => {
 									<span>Fecha del examen</span>
 									<input
 										type="date"
-										required
 										value={examDate}
 										onChange={(e) => setExamDate(e.target.value)}
+										required
 									/>
 								</label>
 
@@ -182,7 +182,9 @@ const Dashboard = ({ examsDB }: examProps) => {
 									<tr key={exam.id}>
 										<td>{exam.title}</td>
 										<td>{exam.assignatures}</td>
-										<td>{exam.exam_date}</td>
+										<td>
+											{new Date(exam.exam_date).toLocaleDateString("en-GB") || exam.exam_date}
+										</td>
 										<td>
 											<details
 												role="list"
