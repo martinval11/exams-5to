@@ -183,7 +183,9 @@ const Dashboard = ({ examsDB }: examProps) => {
 										<td>{exam.title}</td>
 										<td>{exam.assignatures}</td>
 										<td>
-											{new Date(exam.exam_date).toLocaleDateString("es-ar") || exam.exam_date}
+											{new Date(
+												new Date(exam.exam_date).getTime() + 86400000,
+											).toLocaleDateString("es-ar") || exam.exam_date}
 										</td>
 										<td>
 											<details
@@ -191,7 +193,7 @@ const Dashboard = ({ examsDB }: examProps) => {
 												className={styles.actionsButtonContainer}
 											>
 												<summary aria-haspopup="listbox" role="button">
-													&#8942;
+													<span>&#8942;</span>
 												</summary>
 												<ul className={styles.actions}>
 													<li>

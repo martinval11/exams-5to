@@ -50,6 +50,10 @@
   display: flex;
 }
 
+.actionsButtonContainer summary span {
+  margin-left: 2px;
+}
+
 .actions {
   width: fit-content;
 }

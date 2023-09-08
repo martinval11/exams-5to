@@ -49,7 +49,11 @@ const Home = ({ examsDB }: examProps) => {
 									<tr key={exam.id}>
 										<td>{exam.title}</td>
 										<td>{exam.assignatures}</td>
-										<td>{new Date(exam.exam_date).toLocaleDateString("en-GB") || exam.exam_date}</td>
+										<td>
+											{new Date(
+												new Date(exam.exam_date).getTime() + 86400000,
+											).toLocaleDateString("es-ar") || exam.exam_date}
+										</td>
 									</tr>
 								))}
 							</tbody>
