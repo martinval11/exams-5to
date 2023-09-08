@@ -30,7 +30,7 @@
 }
 
 .dialogFooter button {
-  width: min-content !important;
+  width: fit-content !important;
 }
 
 .form {

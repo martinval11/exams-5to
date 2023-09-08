@@ -56,12 +56,15 @@ const Dashboard = ({ examsDB }: examProps) => {
 	};
 
 	const deleteExam = async () => {
+		setIsLoading("true");
+
 		const { error } = await supabase
 			.from("exams")
 			.delete()
 			.eq("id", Number(deleteIdButton));
 
 		if (error) {
+			setIsLoading("false");
 			toast.error("Algo salió mal");
 			console.error(`DB error: ${error}`);
 			return;
@@ -70,6 +73,7 @@ const Dashboard = ({ examsDB }: examProps) => {
 		const { data: exams } = await supabase.from("exams").select("*");
 		deleteExamRef.current?.close();
 		setExams(exams || []);
+		setIsLoading("false");
 	};
 
 	useEffect(() => {
@@ -157,8 +161,12 @@ const Dashboard = ({ examsDB }: examProps) => {
 								>
 									Cancelar
 								</button>
-								<button type="button" onClick={deleteExam}>
-									Borrar
+								<button
+									type="button"
+									onClick={deleteExam}
+									aria-busy={isLoading === "true"}
+								>
+									{isLoading === "true" ? "Borrando..." : "Borrar"}
 								</button>
 							</footer>
 						</article>
