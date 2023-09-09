@@ -12,6 +12,13 @@ type exam = {
 	exam_date: string;
 };
 
+type editValues = {
+	id: number;
+	title: string;
+	assignatures: string;
+	date: string;
+};
+
 type examProps = {
 	examsDB: exam[];
 };
@@ -20,6 +27,12 @@ const Dashboard = ({ examsDB }: examProps) => {
 	const [exams, setExams] = useState<exam[]>(examsDB);
 	const [examDate, setExamDate] = useState("");
 	const [isLoading, setIsLoading] = useState("false");
+	const [editValues, setEditValues] = useState<editValues>({
+		id: 0,
+		title: "",
+		assignatures: "",
+		date: "",
+	});
 
 	const [deleteIdButton, setDeleteIdButton] = useState("");
 
@@ -27,6 +40,11 @@ const Dashboard = ({ examsDB }: examProps) => {
 	const examAssignaturesRef = useRef<HTMLInputElement>(null);
 	const addExamRef = useRef<HTMLDialogElement>(null);
 	const deleteExamRef = useRef<HTMLDialogElement>(null);
+
+	const editExamRef = useRef<HTMLDialogElement>(null);
+	const editExamTitleRef = useRef<HTMLInputElement>(null);
+	const editExamAssignaturesRef = useRef<HTMLInputElement>(null);
+	const [editExamDate, setEditExamDate] = useState("");
 
 	const addExam = async (event: FormEvent) => {
 		event.preventDefault();
@@ -53,6 +71,37 @@ const Dashboard = ({ examsDB }: examProps) => {
 		setIsLoading("false");
 		addExamRef.current?.close();
 		setExams([...exams, data[0]]);
+	};
+
+	const addEditedExam = async (event: FormEvent) => {
+		event.preventDefault();
+		setIsLoading("true");
+
+		const { data, error } = await supabase
+			.from("exams")
+			.update({
+				title: editExamTitleRef?.current?.value,
+				assignatures: editExamAssignaturesRef?.current?.value,
+				exam_date: editExamDate,
+			})
+			.eq("id", editValues.id)
+			.select();
+
+		if (error) {
+			toast.error("Ha ocurrido un error");
+			addExamRef.current?.close();
+			setIsLoading("false");
+			throw new Error(`DB error: ${error}`);
+		}
+
+		setIsLoading("false");
+		editExamRef.current?.close();
+
+		// Remove the old exam from the exams array
+		const updatedExams = exams.filter((exam) => exam.id !== editValues.id);
+
+		// Add the updated exam to the exams array
+		setExams([...updatedExams, data[0]]);
 	};
 
 	const deleteExam = async () => {
@@ -172,6 +221,57 @@ const Dashboard = ({ examsDB }: examProps) => {
 						</article>
 					</dialog>
 
+					<dialog ref={editExamRef}>
+						<article>
+							<header className={styles.dialogHeader}>
+								<button
+									type="button"
+									aria-label="Close"
+									className={`close ${styles.closeModalButton}`}
+									onClick={() => editExamRef.current?.close()}
+								/>
+								<h3>Editar examen</h3>
+							</header>
+							<form onSubmit={addEditedExam} className={styles.form}>
+								<label>
+									<span>Título del Examen</span>
+									<input
+										type="text"
+										placeholder="Título del Examen"
+										defaultValue={editValues.title}
+										ref={editExamTitleRef}
+										required
+									/>
+								</label>
+
+								<label>
+									<span>Temas</span>
+									<input
+										type="text"
+										placeholder="Ej: Tema 1, Tema 2, Tema 3..."
+										defaultValue={editValues.assignatures}
+										ref={editExamAssignaturesRef}
+										required
+									/>
+								</label>
+
+								<label>
+									<span>Fecha del examen</span>
+									<input
+										type="date"
+										value={editExamDate}
+										onChange={(e) => setEditExamDate(e.target.value)}
+										required
+									/>
+								</label>
+
+								<button type="submit" aria-busy={isLoading === "true"}>
+									{isLoading === "true" ? "Publicando..." : "Publicar"}
+								</button>
+							</form>
+						</article>
+					</dialog>
+
 					<section className="exams">
 						{exams.length === 0 ? <h2>No hay exámenes</h2> : null}
 
@@ -204,6 +304,24 @@ const Dashboard = ({ examsDB }: examProps) => {
 													<span>&#8942;</span>
 												</summary>
 												<ul className={styles.actions}>
+													<li>
+														<button
+															type="button"
+															id={`${exam.id}`}
+															onClick={() => {
+																setEditValues({
+																	id: exam.id,
+																	title: exam.title,
+																	assignatures: exam.assignatures,
+																	date: exam.exam_date,
+																});
+																setEditExamDate(editValues.date)
+																editExamRef.current?.showModal();
+															}}
+														>
+															Editar
+														</button>
+													</li>
 													<li>
 														<button
 															type="button"
