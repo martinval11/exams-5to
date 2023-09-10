@@ -44,7 +44,7 @@ const Dashboard = ({ examsDB }: examProps) => {
 	const editExamRef = useRef<HTMLDialogElement>(null);
 	const editExamTitleRef = useRef<HTMLInputElement>(null);
 	const editExamAssignaturesRef = useRef<HTMLInputElement>(null);
-	const [editExamDate, setEditExamDate] = useState("");
+	const editExamDateRef = useRef<HTMLInputElement>(null);
 
 	const addExam = async (event: FormEvent) => {
 		event.preventDefault();
@@ -82,7 +82,7 @@ const Dashboard = ({ examsDB }: examProps) => {
 			.update({
 				title: editExamTitleRef?.current?.value,
 				assignatures: editExamAssignaturesRef?.current?.value,
-				exam_date: editExamDate,
+				exam_date: editExamDateRef?.current?.value,
 			})
 			.eq("id", editValues.id)
 			.select();
@@ -257,12 +257,7 @@ const Dashboard = ({ examsDB }: examProps) => {
 
 								<label>
 									<span>Fecha del examen</span>
-									<input
-										type="date"
-										value={editExamDate}
-										onChange={(e) => setEditExamDate(e.target.value)}
-										required
-									/>
+									<input type="date" ref={editExamDateRef} required />
 								</label>
 
 								<button type="submit" aria-busy={isLoading === "true"}>
@@ -315,7 +310,10 @@ const Dashboard = ({ examsDB }: examProps) => {
 																	assignatures: exam.assignatures,
 																	date: exam.exam_date,
 																});
-																setEditExamDate(editValues.date)
+																if (editExamDateRef.current) {
+																	editExamDateRef.current.value =
+																		exam.exam_date;
+																}
 																editExamRef.current?.showModal();
 															}}
 														>
