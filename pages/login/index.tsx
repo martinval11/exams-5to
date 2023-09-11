@@ -14,13 +14,13 @@ type user = {
 };
 
 const Login = () => {
-	const [isLoading, setIsLoading] = useState("false");
+	const [isLoading, setIsLoading] = useState(false);
 	const usernameRef = useRef<HTMLInputElement>(null);
 	const passwordRef = useRef<HTMLInputElement>(null);
 
 	const auth = async (event: FormEvent) => {
 		event.preventDefault();
-		setIsLoading("true");
+		setIsLoading(true);
 
 		const { data: users, error } = await supabase
 			.from("users")
@@ -28,8 +28,8 @@ const Login = () => {
 
 		if (error) {
 			toast.error("Algo salió mal");
-			setIsLoading("false");
-			return;
+			setIsLoading(false);
+			throw new Error(error.message);
 		}
 
 		const searchUser = users.find(
@@ -45,7 +45,7 @@ const Login = () => {
 		}
 
 		toast.error("Contraseña o Usuario Incorrectos");
-		setIsLoading("false");
+		setIsLoading(false);
 	};
 
 	return (
@@ -56,7 +56,6 @@ const Login = () => {
 				<meta name="robots" content="nofollow,noindex" />
 				<link rel="icon" href="/favicon.png" />
 			</Head>
-			<Toaster richColors position="bottom-right" />
 
 			<main className={styles.container}>
 				<h1>Iniciar Sesión</h1>
@@ -81,11 +80,12 @@ const Login = () => {
 						/>
 					</label>
 
-					<button type="submit" aria-busy={isLoading === "true"}>
-						{isLoading === "true" ? "Iniciando Sesión..." : "Iniciar Sesión"}
+					<button type="submit" aria-busy={isLoading}>
+						{isLoading ? "Iniciando Sesión..." : "Iniciar Sesión"}
 					</button>
 				</form>
 			</main>
+			<Toaster richColors position="bottom-right" />
 		</>
 	);
 };

@@ -3,12 +3,13 @@ import Head from "next/head";
 
 import { supabase } from "@/lib/supabaseClient";
 import styles from "./style.module.css";
+import { syncDate } from "@/lib/syncDate";
 
 type exam = {
 	id: number;
 	title: string;
 	assignatures: string;
-	exam_date: string;
+	date: string;
 };
 
 type examProps = {
@@ -29,6 +30,7 @@ const Home = ({ examsDB }: examProps) => {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.png" />
 			</Head>
+
 			<main className={styles.container}>
 				<div>
 					<h1>Exámenes Pendientes</h1>
@@ -50,9 +52,7 @@ const Home = ({ examsDB }: examProps) => {
 										<td>{exam.title}</td>
 										<td>{exam.assignatures}</td>
 										<td>
-											{new Date(
-												new Date(exam.exam_date).getTime() + 86400000,
-											).toLocaleDateString("es-ar") || exam.exam_date}
+											{syncDate(exam.date)}
 										</td>
 									</tr>
 								))}
@@ -67,7 +67,7 @@ const Home = ({ examsDB }: examProps) => {
 
 export default Home;
 
-export async function getServerSideProps() {
+export const getServerSideProps = async () => {
 	const { data: exams, error } = await supabase.from("exams").select("*");
 
 	if (error) {
