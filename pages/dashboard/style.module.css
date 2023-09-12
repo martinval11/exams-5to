@@ -51,7 +51,7 @@
 }
 
 .actionsButtonContainer summary span {
-  margin-left: 2px;
+  margin-left: 4px;
 }
 
 .actions {
@@ -86,4 +86,12 @@
 .deleteButton,
 .updateButton {
   padding: 2px 4px;
+}
+
+.important {
+  background: #1095C1;
+}
+
+.important td {
+  color: #f9f9f9;
 }

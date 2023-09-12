@@ -9,3 +9,11 @@
   align-items: center;
   text-align: center;
 }
+
+.important {
+  background: #1095C1;
+}
+
+.important td {
+  color: #f9f9f9;
+}

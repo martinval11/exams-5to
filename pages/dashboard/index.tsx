@@ -124,8 +124,12 @@ const Dashboard = ({ examsDB }: examProps) => {
 						</thead>
 
 						<tbody>
-							{exams.map((exam: exam) => (
-								<tr key={exam.id}>
+							{exams.map((exam: exam, index: number) => (
+								<tr
+									key={exam.id}
+									className={index === 0 ? styles.important : ""}
+									title={index === 0 ? "Examen más cercano" : exam.title}
+								>
 									<td>{exam.title}</td>
 									<td>{exam.assignatures}</td>
 									<td>{syncDate(exam.date)}</td>
@@ -187,7 +191,11 @@ export const getServerSideProps = async () => {
 		throw new Error(error.message);
 	}
 
+	const sortedExamsByDate = exams.sort(
+		(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+	);
+
 	return {
-		props: { examsDB: exams },
+		props: { examsDB: sortedExamsByDate },
 	};
 };
