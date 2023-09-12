@@ -2,6 +2,7 @@ import { useState, useRef, MouseEventHandler, FormEvent } from "react";
 
 import styles from "../style.module.css";
 import { supabase } from "@/lib/supabaseClient";
+import { EXAMS_TABLE } from "@/keys/keys";
 
 type exam = {
 	id: number;
@@ -38,7 +39,7 @@ const EditExamDialog = ({
 		setIsLoading(true);
 
 		const { data, error } = await supabase
-			.from("exams")
+			.from(EXAMS_TABLE)
 			.update({
 				title: editExamTitleRef?.current?.value,
 				assignatures: editExamAssignaturesRef?.current?.value,

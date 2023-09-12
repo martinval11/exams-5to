@@ -9,6 +9,7 @@ import DeleteExamDialog from "./components/DeleteExamDialog";
 import AddExamDialog from "./components/AddExamDialog";
 import EditExamDialog from "./components/EditExamDialog";
 import { syncDate } from "@/lib/syncDate";
+import { EXAMS_TABLE } from "@/keys/keys";
 
 type exam = {
 	id: number;
@@ -61,7 +62,7 @@ const Dashboard = ({ examsDB }: examProps) => {
 					<AddExamDialog
 						onError={() => toast.error("Algo salió mal")}
 						onFinish={async () => {
-							const { data: exams } = await supabase.from("exams").select("*");
+							const { data: exams } = await supabase.from(EXAMS_TABLE).select("*");
 							setAddExamDialog(false);
 							const sortedExamsByDate = exams?.sort(
 								(a, b) =>
@@ -79,7 +80,7 @@ const Dashboard = ({ examsDB }: examProps) => {
 						onError={() => toast.error("Algo salió mal")}
 						id={deleteIdButton}
 						onFinish={async () => {
-							const { data: exams } = await supabase.from("exams").select("*");
+							const { data: exams } = await supabase.from(EXAMS_TABLE).select("*");
 							const sortedExamsByDate = exams?.sort(
 								(a, b) =>
 									new Date(a.date).getTime() - new Date(b.date).getTime(),
@@ -198,7 +199,7 @@ const Dashboard = ({ examsDB }: examProps) => {
 export default Dashboard;
 
 export const getServerSideProps = async () => {
-	const { data: exams, error } = await supabase.from("exams").select("*");
+	const { data: exams, error } = await supabase.from(EXAMS_TABLE).select("*");
 
 	if (error) {
 		throw new Error(error.message);

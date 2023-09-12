@@ -2,6 +2,7 @@ import { useState, MouseEventHandler } from "react";
 
 import { supabase } from "@/lib/supabaseClient";
 import styles from "../style.module.css";
+import { EXAMS_TABLE } from "@/keys/keys";
 
 interface DeleteExamDialogProps {
 	onError: () => void;
@@ -22,7 +23,7 @@ const DeleteExamDialog = ({
 		setIsLoading(true);
 
 		const { error } = await supabase
-			.from("exams")
+			.from(EXAMS_TABLE)
 			.delete()
 			.eq("id", Number(id));
 

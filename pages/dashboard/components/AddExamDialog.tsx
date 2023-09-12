@@ -2,6 +2,7 @@ import { useState, useRef, MouseEventHandler, FormEvent } from "react";
 
 import styles from "../style.module.css";
 import { supabase } from "@/lib/supabaseClient";
+import { EXAMS_TABLE } from "@/keys/keys";
 
 interface AddExamDialogProps {
 	onError: () => void;
@@ -25,7 +26,7 @@ const AddExamDialog = ({
 		setIsLoading(true);
 
 		const { error } = await supabase
-			.from("exams")
+			.from(EXAMS_TABLE)
 			.insert([
 				{
 					title: examTitleRef?.current?.value,

@@ -4,6 +4,7 @@ import Head from "next/head";
 import { supabase } from "@/lib/supabaseClient";
 import styles from "./style.module.css";
 import { syncDate } from "@/lib/syncDate";
+import { EXAMS_TABLE } from "@/keys/keys";
 
 type exam = {
 	id: number;
@@ -32,36 +33,35 @@ const Home = ({ examsDB }: examProps) => {
 			</Head>
 
 			<main className={styles.container}>
-				<div>
+				<section className="exams">
 					<h1>Exámenes Pendientes</h1>
-					<div className="exams">
-						{exams.length === 0 ? <h2>No hay exámenes</h2> : null}
+					
+					{exams.length === 0 ? <h2>No hay exámenes</h2> : null}
 
-						<table className={styles.table}>
-							<thead>
-								<tr>
-									<th>Título</th>
-									<th>Temas</th>
-									<th>Fecha</th>
+					<table className={styles.table}>
+						<thead>
+							<tr>
+								<th>Título</th>
+								<th>Temas</th>
+								<th>Fecha</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							{exams.map((exam: exam, index: number) => (
+								<tr
+									key={exam.id}
+									className={index === 0 ? styles.important : ""}
+									title={index === 0 ? "Examen más cercano" : exam.title}
+								>
+									<td>{exam.title}</td>
+									<td>{exam.assignatures}</td>
+									<td>{syncDate(exam.date)}</td>
 								</tr>
-							</thead>
-
-							<tbody>
-								{exams.map((exam: exam, index: number) => (
-									<tr
-										key={exam.id}
-										className={index === 0 ? styles.important : ""}
-										title={index === 0 ? "Examen más cercano" : exam.title}
-									>
-										<td>{exam.title}</td>
-										<td>{exam.assignatures}</td>
-										<td>{syncDate(exam.date)}</td>
-									</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
-				</div>
+							))}
+						</tbody>
+					</table>
+				</section>
 			</main>
 		</>
 	);
@@ -70,7 +70,7 @@ const Home = ({ examsDB }: examProps) => {
 export default Home;
 
 export const getServerSideProps = async () => {
-	const { data: exams, error } = await supabase.from("exams").select("*");
+	const { data: exams, error } = await supabase.from(EXAMS_TABLE).select("*");
 
 	if (error) {
 		throw new Error(error.message);
