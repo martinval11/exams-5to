@@ -63,7 +63,11 @@ const Dashboard = ({ examsDB }: examProps) => {
 						onFinish={async () => {
 							const { data: exams } = await supabase.from("exams").select("*");
 							setAddExamDialog(false);
-							setExams(exams || []);
+							const sortedExamsByDate = exams?.sort(
+								(a, b) =>
+									new Date(a.date).getTime() - new Date(b.date).getTime(),
+							);
+							setExams(sortedExamsByDate || []);
 							toast.success("Examen agregado con éxito");
 						}}
 						onCancelDialog={() => setAddExamDialog(false)}
@@ -76,8 +80,12 @@ const Dashboard = ({ examsDB }: examProps) => {
 						id={deleteIdButton}
 						onFinish={async () => {
 							const { data: exams } = await supabase.from("exams").select("*");
+							const sortedExamsByDate = exams?.sort(
+								(a, b) =>
+									new Date(a.date).getTime() - new Date(b.date).getTime(),
+							);
+							setExams(sortedExamsByDate || []);
 							setDeleteExamDialog(false);
-							setExams(exams || []);
 							toast.success("Examen borrado con éxito");
 						}}
 						onCancelDialog={() => setDeleteExamDialog(false)}
@@ -100,7 +108,12 @@ const Dashboard = ({ examsDB }: examProps) => {
 								assignatures: item.assignatures,
 								date: item.date,
 							}));
-							setExams(examData);
+							const sortedExamsByDate = examData.sort(
+								(a, b) =>
+									new Date(a.date).getTime() - new Date(b.date).getTime(),
+							);
+
+							setExams(sortedExamsByDate);
 						}}
 						onCancelDialog={() => setEditExamDialog(false)}
 					/>
