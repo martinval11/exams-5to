@@ -1,4 +1,5 @@
 import { useState, useRef, MouseEventHandler, FormEvent } from "react";
+import { Resend } from "resend";
 
 import styles from "../style.module.css";
 import { supabase } from "@/lib/supabaseClient";
@@ -43,6 +44,7 @@ const AddExamDialog = ({
 		}
 
 		setIsLoading(false);
+
 		onFinish();
 	};
 

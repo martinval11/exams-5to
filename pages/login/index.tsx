@@ -54,7 +54,7 @@ const Login = () => {
 				<title>Exámenes 5ºA - Iniciar Sesión</title>
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<meta name="robots" content="nofollow,noindex" />
-				<link rel="icon" href="/favicon.png" />
+				<link rel="icon" href="/icon-512x512.png" />
 			</Head>
 
 			<main className={styles.container}>
