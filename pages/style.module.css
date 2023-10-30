@@ -11,9 +11,10 @@
 }
 
 .important {
-  background: #1095C1;
+  background: #DF2225;
+  color: #FFF;
 }
 
 .important td {
-  color: #f9f9f9;
+  color: #FFF;
 }

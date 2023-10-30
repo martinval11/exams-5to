@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import Head from "next/head";
-import { Toaster, toast } from "sonner";
-import { getAuth, signInAnonymously } from "firebase/auth";
-import { getToken, onMessage } from "firebase/messaging";
+import { useEffect, useState } from 'react';
+import Head from 'next/head';
+import { Toaster, toast } from 'sonner';
+import { getAuth, signInAnonymously } from 'firebase/auth';
+import { getToken, onMessage } from 'firebase/messaging';
 
-import { messaging } from "../db/firebase";
-import { supabase } from "@/lib/supabaseClient";
-import styles from "./style.module.css";
-import { syncDate } from "@/lib/syncDate";
-import { EXAMS_TABLE } from "@/keys/keys";
+import { messaging } from '../db/firebase';
+import { supabase } from '@/lib/supabaseClient';
+import styles from './style.module.css';
+import { syncDate } from '@/lib/syncDate';
+import { EXAMS_TABLE } from '@/keys/keys';
 
 type exam = {
 	id: number;
@@ -24,33 +24,36 @@ type examProps = {
 const Home = ({ examsDB }: examProps) => {
 	const [exams] = useState<exam[]>(examsDB);
 	const [loggedIn, setLoggedIn] = useState(false);
+	const [messagesActivated, setMessagesActivated] = useState(false);
 
 	const login = () => {
 		const auth = getAuth();
 		signInAnonymously(auth)
 			.then(() => {
 				setLoggedIn(true);
+				localStorage.setItem('loggedIn', 'true');
 			})
 			.catch((error) => {
-				console.log(error);
+				console.error(error);
 			});
 	};
 
 	const activateMessages = async () => {
 		if (!messaging) {
-			console.error("Messaging is not initialized");
+			console.error('Messaging is not initialized');
 			return;
 		}
 
 		const token = await getToken(messaging, {
 			vapidKey:
-				"BM1V4ir72Km1eI3AFasKofEKi8M169EB8W9Gf5UGaNHDWQL7LS7cEs_UItFx0hnBnYu1S2YNKhMc5dOrO_7h2q8",
+				'BM1V4ir72Km1eI3AFasKofEKi8M169EB8W9Gf5UGaNHDWQL7LS7cEs_UItFx0hnBnYu1S2YNKhMc5dOrO_7h2q8',
 		}).catch((error) => {
-			toast.error("Ha ocurrido un error");
+			// This error only occurs when the page is loaded for the first time.
 			throw new Error(error.message);
 		});
 
 		if (token) {
+			setMessagesActivated(true);
 			return;
 		}
 		return;
@@ -59,15 +62,17 @@ const Home = ({ examsDB }: examProps) => {
 	const register = async () => {
 		try {
 			await login();
-			if (!loggedIn) {
+			if (!messagesActivated) {
 				await activateMessages();
 			}
 		} catch (error) {
-			if (error instanceof Error) {
+			if (error instanceof Error && localStorage.getItem('load') === null) {
+				localStorage.setItem('load', '2');
+				window.location.reload();
 				throw new Error(error.message);
-			} else {
-				throw error;
 			}
+			localStorage.setItem('load', '2');
+			return;
 		}
 	};
 
@@ -90,16 +95,15 @@ const Home = ({ examsDB }: examProps) => {
 		<>
 			<Head>
 				<title>Exámenes 5ºA</title>
+				
 				<meta
-					name="description"
-					content="Verifica los exámenes que tienes que hacer y no te olvides de ninguno"
+					name='viewport'
+					content='width=device-width, initial-scale=1'
 				/>
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<link rel="icon" href="/icon-512x512.png" />
 			</Head>
 
 			<main className={styles.container}>
-				<section className="exams">
+				<section className='exams'>
 					<h1>Exámenes Pendientes</h1>
 
 					{exams.length === 0 ? <h2>No hay exámenes</h2> : null}
@@ -117,9 +121,8 @@ const Home = ({ examsDB }: examProps) => {
 							{exams.map((exam: exam, index: number) => (
 								<tr
 									key={exam.id}
-									className={index === 0 ? styles.important : ""}
-									title={index === 0 ? "Examen más cercano" : exam.title}
-								>
+									className={index === 0 ? styles.important : ''}
+									title={index === 0 ? 'Examen más cercano' : exam.title}>
 									<td>{exam.title}</td>
 									<td>{exam.assignatures}</td>
 									<td>{syncDate(exam.date)}</td>
@@ -137,14 +140,14 @@ const Home = ({ examsDB }: examProps) => {
 export default Home;
 
 export const getServerSideProps = async () => {
-	const { data: exams, error } = await supabase.from(EXAMS_TABLE).select("*");
+	const { data: exams, error } = await supabase.from(EXAMS_TABLE).select('*');
 
 	if (error) {
 		throw new Error(error.message);
 	}
 
 	const sortedExamsByDate = exams.sort(
-		(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+		(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
 	);
 
 	return {

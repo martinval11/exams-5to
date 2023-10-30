@@ -1,12 +1,12 @@
-import { FormEvent, useRef, useState } from "react";
-import router from "next/router";
-import Head from "next/head";
-import { Toaster, toast } from "sonner";
+import { FormEvent, useRef, useState } from 'react';
+import router from 'next/router';
+import Head from 'next/head';
+import { Toaster, toast } from 'sonner';
 
-import { supabase } from "@/lib/supabaseClient";
-import { decrypt } from "@/lib/decrypt";
+import { supabase } from '@/lib/supabaseClient';
+import { decrypt } from '@/lib/decrypt';
 
-import styles from "./styles.module.css";
+import styles from './styles.module.css';
 
 type user = {
 	name: string;
@@ -23,11 +23,11 @@ const Login = () => {
 		setIsLoading(true);
 
 		const { data: users, error } = await supabase
-			.from("users")
-			.select("name, password");
+			.from('users')
+			.select('name, password');
 
 		if (error) {
-			toast.error("Algo salió mal");
+			toast.error('Algo salió mal');
 			setIsLoading(false);
 			throw new Error(error.message);
 		}
@@ -35,16 +35,16 @@ const Login = () => {
 		const searchUser = users.find(
 			(user: user) =>
 				user.name === usernameRef.current?.value &&
-				decrypt(user.password).message === passwordRef.current?.value,
+				decrypt(user.password).message === passwordRef.current?.value
 		);
 
 		if (searchUser) {
-			sessionStorage.setItem("auth", "true");
-			router.push("/dashboard");
+			sessionStorage.setItem('auth', 'true');
+			router.push('/dashboard');
 			return;
 		}
 
-		toast.error("Contraseña o Usuario Incorrectos");
+		toast.error('Contraseña o Usuario Incorrectos');
 		setIsLoading(false);
 	};
 
@@ -52,9 +52,18 @@ const Login = () => {
 		<>
 			<Head>
 				<title>Exámenes 5ºA - Iniciar Sesión</title>
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<meta name="robots" content="nofollow,noindex" />
-				<link rel="icon" href="/icon-512x512.png" />
+				<meta
+					name='viewport'
+					content='width=device-width, initial-scale=1'
+				/>
+				<meta
+					name='robots'
+					content='nofollow,noindex'
+				/>
+				<link
+					rel='icon'
+					href='/icon-512x512.png'
+				/>
 			</Head>
 
 			<main className={styles.container}>
@@ -63,8 +72,8 @@ const Login = () => {
 					<label>
 						<span>Nombre de Usuario</span>
 						<input
-							type="text"
-							placeholder="Tu nombre de usuario"
+							type='text'
+							placeholder='Tu nombre de usuario'
 							ref={usernameRef}
 							required
 						/>
@@ -73,19 +82,24 @@ const Login = () => {
 					<label>
 						<span>Contraseña</span>
 						<input
-							type="password"
-							placeholder="Tu contraseña"
+							type='password'
+							placeholder='Tu contraseña'
 							ref={passwordRef}
 							required
 						/>
 					</label>
 
-					<button type="submit" aria-busy={isLoading}>
-						{isLoading ? "Iniciando Sesión..." : "Iniciar Sesión"}
+					<button
+						type='submit'
+						aria-busy={isLoading}>
+						{isLoading ? 'Iniciando Sesión...' : 'Iniciar Sesión'}
 					</button>
 				</form>
 			</main>
-			<Toaster richColors position="bottom-right" />
+			<Toaster
+				richColors
+				position='bottom-right'
+			/>
 		</>
 	);
 };

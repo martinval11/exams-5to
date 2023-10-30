@@ -1,8 +1,8 @@
-import { useState, MouseEventHandler } from "react";
+import { useState, MouseEventHandler } from 'react';
 
-import { supabase } from "@/lib/supabaseClient";
-import styles from "../style.module.css";
-import { EXAMS_TABLE } from "@/keys/keys";
+import { supabase } from '@/lib/supabaseClient';
+import styles from '../style.module.css';
+import { EXAMS_TABLE } from '@/keys/keys';
 
 interface DeleteExamDialogProps {
 	onError: () => void;
@@ -25,7 +25,7 @@ const DeleteExamDialog = ({
 		const { error } = await supabase
 			.from(EXAMS_TABLE)
 			.delete()
-			.eq("id", Number(id));
+			.eq('id', Number(id));
 
 		if (error) {
 			setIsLoading(false);
@@ -43,11 +43,17 @@ const DeleteExamDialog = ({
 				<h3>¿Estas seguro que deseas borrar este elemento?</h3>
 				<p>Esta acción no se puede deshacer.</p>
 				<footer className={styles.dialogFooter}>
-					<button type="button" className="secondary" onClick={onCancelDialog}>
+					<button
+						type='button'
+						className='secondary'
+						onClick={onCancelDialog}>
 						Cancelar
 					</button>
-					<button type="button" onClick={deleteExam} aria-busy={isLoading}>
-						{isLoading ? "Borrando..." : "Borrar"}
+					<button
+						type='button'
+						onClick={deleteExam}
+						aria-busy={isLoading}>
+						{isLoading ? 'Borrando...' : 'Borrar'}
 					</button>
 				</footer>
 			</article>

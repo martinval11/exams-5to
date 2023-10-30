@@ -1,8 +1,8 @@
-import { useState, useRef, MouseEventHandler, FormEvent } from "react";
+import { useState, useRef, MouseEventHandler, FormEvent } from 'react';
 
-import styles from "../style.module.css";
-import { supabase } from "@/lib/supabaseClient";
-import { EXAMS_TABLE } from "@/keys/keys";
+import styles from '../style.module.css';
+import { supabase } from '@/lib/supabaseClient';
+import { EXAMS_TABLE } from '@/keys/keys';
 
 type exam = {
 	id: number;
@@ -45,7 +45,7 @@ const EditExamDialog = ({
 				assignatures: editExamAssignaturesRef?.current?.value,
 				date: editExamDate,
 			})
-			.eq("id", values.id)
+			.eq('id', values.id)
 			.select();
 
 		if (error) {
@@ -67,19 +67,21 @@ const EditExamDialog = ({
 			<article>
 				<header className={styles.dialogHeader}>
 					<button
-						type="button"
-						aria-label="Close"
+						type='button'
+						aria-label='Close'
 						className={`close ${styles.closeModalButton}`}
 						onClick={onCancelDialog}
 					/>
 					<h3>Editar examen</h3>
 				</header>
-				<form onSubmit={addEditedExam} className={styles.form}>
+				<form
+					onSubmit={addEditedExam}
+					className={styles.form}>
 					<label>
 						<span>Título del Examen</span>
 						<input
-							type="text"
-							placeholder="Título del Examen"
+							type='text'
+							placeholder='Título del Examen'
 							defaultValue={values?.title}
 							ref={editExamTitleRef}
 							required
@@ -89,8 +91,8 @@ const EditExamDialog = ({
 					<label>
 						<span>Temas</span>
 						<input
-							type="text"
-							placeholder="Ej: Tema 1, Tema 2, Tema 3..."
+							type='text'
+							placeholder='Ej: Tema 1, Tema 2, Tema 3...'
 							defaultValue={values?.assignatures}
 							ref={editExamAssignaturesRef}
 							required
@@ -100,15 +102,17 @@ const EditExamDialog = ({
 					<label>
 						<span>Fecha del examen</span>
 						<input
-							type="date"
+							type='date'
 							value={editExamDate}
 							onChange={(e) => setEditExamDate(e.target.value)}
 							required
 						/>
 					</label>
 
-					<button type="submit" aria-busy={isLoading}>
-						{isLoading ? "Publicando..." : "Publicar"}
+					<button
+						type='submit'
+						aria-busy={isLoading}>
+						{isLoading ? 'Publicando...' : 'Publicar'}
 					</button>
 				</form>
 			</article>

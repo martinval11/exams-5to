@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import Head from "next/head";
-import { Toaster, toast } from "sonner";
+import { useEffect, useState } from 'react';
+import Head from 'next/head';
+import { Toaster, toast } from 'sonner';
 
-import { supabase } from "@/lib/supabaseClient";
-import styles from "./style.module.css";
+import { supabase } from '@/lib/supabaseClient';
+import styles from './style.module.css';
 
-import DeleteExamDialog from "./components/DeleteExamDialog";
-import AddExamDialog from "./components/AddExamDialog";
-import EditExamDialog from "./components/EditExamDialog";
-import { syncDate } from "@/lib/syncDate";
-import { EXAMS_TABLE } from "@/keys/keys";
+import DeleteExamDialog from './components/DeleteExamDialog';
+import AddExamDialog from './components/AddExamDialog';
+import EditExamDialog from './components/EditExamDialog';
+import { syncDate } from '@/lib/syncDate';
+import { EXAMS_TABLE } from '@/keys/keys';
 
 type exam = {
 	id: number;
@@ -31,18 +31,18 @@ const Dashboard = ({ examsDB }: examProps) => {
 
 	const [editValues, setEditValues] = useState<exam>({
 		id: 0,
-		title: "",
-		assignatures: "",
-		date: "",
+		title: '',
+		assignatures: '',
+		date: '',
 	});
 
-	const [deleteIdButton, setDeleteIdButton] = useState("");
+	const [deleteIdButton, setDeleteIdButton] = useState('');
 
 	useEffect(() => {
-		const token = sessionStorage.getItem("auth");
+		const token = sessionStorage.getItem('auth');
 
-		if (token !== "true") {
-			window.location.href = "/login";
+		if (token !== 'true') {
+			window.location.href = '/login';
 			return;
 		}
 	}, []);
@@ -51,8 +51,14 @@ const Dashboard = ({ examsDB }: examProps) => {
 		<>
 			<Head>
 				<title>Exámenes 5ºA - Panel de Control</title>
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<link rel="icon" href="/icon-512x512.png" />
+				<meta
+					name='viewport'
+					content='width=device-width, initial-scale=1'
+				/>
+				<link
+					rel='icon'
+					href='/icon-512x512.png'
+				/>
 			</Head>
 
 			<main className={styles.container}>
@@ -60,16 +66,18 @@ const Dashboard = ({ examsDB }: examProps) => {
 
 				{addExamDialog && (
 					<AddExamDialog
-						onError={() => toast.error("Algo salió mal")}
+						onError={() => toast.error('Algo salió mal')}
 						onFinish={async () => {
-							const { data: exams } = await supabase.from(EXAMS_TABLE).select("*");
+							const { data: exams } = await supabase
+								.from(EXAMS_TABLE)
+								.select('*');
 							setAddExamDialog(false);
 							const sortedExamsByDate = exams?.sort(
 								(a, b) =>
-									new Date(a.date).getTime() - new Date(b.date).getTime(),
+									new Date(a.date).getTime() - new Date(b.date).getTime()
 							);
 							setExams(sortedExamsByDate || []);
-							toast.success("Examen agregado con éxito");
+							toast.success('Examen agregado con éxito');
 						}}
 						onCancelDialog={() => setAddExamDialog(false)}
 					/>
@@ -77,17 +85,19 @@ const Dashboard = ({ examsDB }: examProps) => {
 
 				{deleteExamDialog && (
 					<DeleteExamDialog
-						onError={() => toast.error("Algo salió mal")}
+						onError={() => toast.error('Algo salió mal')}
 						id={deleteIdButton}
 						onFinish={async () => {
-							const { data: exams } = await supabase.from(EXAMS_TABLE).select("*");
+							const { data: exams } = await supabase
+								.from(EXAMS_TABLE)
+								.select('*');
 							const sortedExamsByDate = exams?.sort(
 								(a, b) =>
-									new Date(a.date).getTime() - new Date(b.date).getTime(),
+									new Date(a.date).getTime() - new Date(b.date).getTime()
 							);
 							setExams(sortedExamsByDate || []);
 							setDeleteExamDialog(false);
-							toast.success("Examen borrado con éxito");
+							toast.success('Examen borrado con éxito');
 						}}
 						onCancelDialog={() => setDeleteExamDialog(false)}
 					/>
@@ -95,11 +105,11 @@ const Dashboard = ({ examsDB }: examProps) => {
 
 				{editExamDialog && (
 					<EditExamDialog
-						onError={() => toast.error("Algo salió mal")}
+						onError={() => toast.error('Algo salió mal')}
 						values={editValues}
 						onFinish={() => {
 							setEditExamDialog(false);
-							toast.success("Los cambios se han subido correctamente");
+							toast.success('Los cambios se han subido correctamente');
 						}}
 						globalExams={exams}
 						parentCallback={(childData: exam[]) => {
@@ -111,7 +121,7 @@ const Dashboard = ({ examsDB }: examProps) => {
 							}));
 							const sortedExamsByDate = examData.sort(
 								(a, b) =>
-									new Date(a.date).getTime() - new Date(b.date).getTime(),
+									new Date(a.date).getTime() - new Date(b.date).getTime()
 							);
 
 							setExams(sortedExamsByDate);
@@ -120,8 +130,10 @@ const Dashboard = ({ examsDB }: examProps) => {
 					/>
 				)}
 
-				<section className="exams">
-					<button type="button" onClick={() => setAddExamDialog(true)}>
+				<section className='exams'>
+					<button
+						type='button'
+						onClick={() => setAddExamDialog(true)}>
 						Añadir examen
 					</button>
 
@@ -133,7 +145,7 @@ const Dashboard = ({ examsDB }: examProps) => {
 								<th>Título</th>
 								<th>Temas</th>
 								<th>Fecha</th>
-								<th>{""}</th>
+								<th>{''}</th>
 							</tr>
 						</thead>
 
@@ -141,23 +153,23 @@ const Dashboard = ({ examsDB }: examProps) => {
 							{exams.map((exam: exam, index: number) => (
 								<tr
 									key={exam.id}
-									className={index === 0 ? styles.important : ""}
-									title={index === 0 ? "Examen más cercano" : exam.title}
-								>
+									className={index === 0 ? styles.important : ''}
+									title={index === 0 ? 'Examen más cercano' : exam.title}>
 									<td>{exam.title}</td>
 									<td>{exam.assignatures}</td>
 									<td>{syncDate(exam.date)}</td>
 									<td>
 										<details
-											role="list"
-											className={styles.actionsButtonContainer}
-										>
-											<summary aria-haspopup="listbox" role="button">
+											role='list'
+											className={styles.actionsButtonContainer}>
+											<summary
+												aria-haspopup='listbox'
+												role='button'>
 												<span>&#8942;</span>
 											</summary>
 											<ul className={styles.actions}>
 												<button
-													type="button"
+													type='button'
 													id={`${exam.id}`}
 													onClick={() => {
 														setEditValues({
@@ -167,19 +179,17 @@ const Dashboard = ({ examsDB }: examProps) => {
 															date: exam.date,
 														});
 														setEditExamDialog(true);
-													}}
-												>
+													}}>
 													Editar
 												</button>
 												<button
-													type="button"
+													type='button'
 													id={`${exam.id}`}
 													onClick={(event) => {
 														const button = event.target as HTMLButtonElement;
 														setDeleteIdButton(button.id);
 														setDeleteExamDialog(true);
-													}}
-												>
+													}}>
 													Borrar
 												</button>
 											</ul>
@@ -191,7 +201,10 @@ const Dashboard = ({ examsDB }: examProps) => {
 					</table>
 				</section>
 			</main>
-			<Toaster richColors position="bottom-right" />
+			<Toaster
+				richColors
+				position='bottom-right'
+			/>
 		</>
 	);
 };
@@ -199,14 +212,14 @@ const Dashboard = ({ examsDB }: examProps) => {
 export default Dashboard;
 
 export const getServerSideProps = async () => {
-	const { data: exams, error } = await supabase.from(EXAMS_TABLE).select("*");
+	const { data: exams, error } = await supabase.from(EXAMS_TABLE).select('*');
 
 	if (error) {
 		throw new Error(error.message);
 	}
 
 	const sortedExamsByDate = exams.sort(
-		(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+		(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
 	);
 
 	return {

@@ -1,9 +1,8 @@
-import { useState, useRef, MouseEventHandler, FormEvent } from "react";
-import { Resend } from "resend";
+import { useState, useRef, MouseEventHandler, FormEvent } from 'react';
 
-import styles from "../style.module.css";
-import { supabase } from "@/lib/supabaseClient";
-import { EXAMS_TABLE } from "@/keys/keys";
+import styles from '../style.module.css';
+import { supabase } from '@/lib/supabaseClient';
+import { EXAMS_TABLE } from '@/keys/keys';
 
 interface AddExamDialogProps {
 	onError: () => void;
@@ -17,7 +16,7 @@ const AddExamDialog = ({
 	onCancelDialog,
 }: AddExamDialogProps) => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [examDate, setExamDate] = useState("");
+	const [examDate, setExamDate] = useState('');
 
 	const examTitleRef = useRef<HTMLInputElement>(null);
 	const examAssignaturesRef = useRef<HTMLInputElement>(null);
@@ -53,19 +52,21 @@ const AddExamDialog = ({
 			<article>
 				<header className={styles.dialogHeader}>
 					<button
-						type="button"
-						aria-label="Close"
+						type='button'
+						aria-label='Close'
 						className={`close ${styles.closeModalButton}`}
 						onClick={onCancelDialog}
 					/>
 					<h3>Añadir examen</h3>
 				</header>
-				<form onSubmit={addExam} className={styles.form}>
+				<form
+					onSubmit={addExam}
+					className={styles.form}>
 					<label>
 						<span>Título del Examen</span>
 						<input
-							type="text"
-							placeholder="Título del Examen"
+							type='text'
+							placeholder='Título del Examen'
 							ref={examTitleRef}
 							required
 						/>
@@ -74,8 +75,8 @@ const AddExamDialog = ({
 					<label>
 						<span>Temas</span>
 						<input
-							type="text"
-							placeholder="Ej: Tema 1, Tema 2, Tema 3..."
+							type='text'
+							placeholder='Ej: Tema 1, Tema 2, Tema 3...'
 							ref={examAssignaturesRef}
 							required
 						/>
@@ -84,15 +85,17 @@ const AddExamDialog = ({
 					<label>
 						<span>Fecha del examen</span>
 						<input
-							type="date"
+							type='date'
 							value={examDate}
 							onChange={(e) => setExamDate(e.target.value)}
 							required
 						/>
 					</label>
 
-					<button type="submit" aria-busy={isLoading}>
-						{isLoading ? "Publicando..." : "Publicar"}
+					<button
+						type='submit'
+						aria-busy={isLoading}>
+						{isLoading ? 'Publicando...' : 'Publicar'}
 					</button>
 				</form>
 			</article>
