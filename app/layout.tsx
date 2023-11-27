@@ -1,27 +1,15 @@
 import '@/styles/globals.css';
 import '@/styles/pico.min.css';
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 
 export const metadata: Metadata = {
   title: 'Exámenes 5ºA',
   description:
     'Verifica los exámenes que tienes que hacer y no te olvides de ninguno',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    viewportFit: 'cover',
-  },
   manifest: '/manifest.json',
-  apple: {
-    appleTouchIcon: '/icon-512x512.png',
-  },
-  themeColor: '#fff',
   icons: {
     shortcut: '/icon-512x512.png',
-  },
-  og: {
-    type: 'website',
-    siteName: 'Exámenes 5ºA',
+    apple: '/icon-512x512.png',
   },
   robots: {
     index: true,
@@ -35,6 +23,11 @@ export const metadata: Metadata = {
     canonical: 'https://examenes-5to.vercel.app',
   },
   openGraph: {
+    title: 'Exámenes 5ºA',
+    siteName: 'Exámenes 5ºA',
+    description:
+      'Verifica los exámenes que tienes que hacer y no te olvides de ninguno',
+    url: 'https://examenes-5to.vercel.app',
     images: [
       {
         url: 'https://examenes-5to.vercel.app/icon-512x512.png',
@@ -42,6 +35,14 @@ export const metadata: Metadata = {
     ],
   },
 };
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#fff',
+};
+
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang='es'>

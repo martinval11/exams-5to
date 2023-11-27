@@ -1,10 +1,10 @@
 import { useState, useRef, MouseEventHandler, FormEvent } from 'react';
 
-import styles from '../style.module.css';
+import styles from './style.module.css';
 import { supabase } from '@/lib/supabaseClient';
 import { EXAMS_TABLE } from '@/keys/keys';
 
-interface AddExamDialogProps {
+type AddExamDialogProps = {
 	onError: () => void;
 	onFinish: () => void;
 	onCancelDialog: MouseEventHandler<HTMLButtonElement>;
@@ -23,6 +23,10 @@ const AddExamDialog = ({
 
 	const addExam = async (event: FormEvent) => {
 		event.preventDefault();
+		const formData = new FormData(event.currentTarget as HTMLFormElement);
+		console.log(formData)
+		
+		/*
 		setIsLoading(true);
 
 		const { error } = await supabase
@@ -45,6 +49,7 @@ const AddExamDialog = ({
 		setIsLoading(false);
 
 		onFinish();
+		*/
 	};
 
 	return (
@@ -67,7 +72,7 @@ const AddExamDialog = ({
 						<input
 							type='text'
 							placeholder='Título del Examen'
-							ref={examTitleRef}
+							name='examTitle'
 							required
 						/>
 					</label>
@@ -77,7 +82,7 @@ const AddExamDialog = ({
 						<input
 							type='text'
 							placeholder='Ej: Tema 1, Tema 2, Tema 3...'
-							ref={examAssignaturesRef}
+							name='examAssignatures'
 							required
 						/>
 					</label>
@@ -88,6 +93,7 @@ const AddExamDialog = ({
 							type='date'
 							value={examDate}
 							onChange={(e) => setExamDate(e.target.value)}
+							name='examDate'
 							required
 						/>
 					</label>
