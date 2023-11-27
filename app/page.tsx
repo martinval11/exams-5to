@@ -143,6 +143,7 @@ export const getServerSideProps = async () => {
 	const { data: exams, error } = await supabase.from(EXAMS_TABLE).select('*');
 
 	if (error) {
+		console.error(error)
 		throw new Error(error.message);
 	}
 

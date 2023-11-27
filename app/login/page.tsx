@@ -1,6 +1,6 @@
 import { FormEvent, useRef, useState } from 'react';
 import router from 'next/router';
-import Head from 'next/head';
+import { Metadata } from 'next';
 import { Toaster, toast } from 'sonner';
 
 import { supabase } from '@/lib/supabaseClient';
@@ -12,6 +12,23 @@ type user = {
 	name: string;
 	password: string;
 };
+
+export const metadata: Metadata = {
+	title: 'Exámenes 5ºA - Iniciar Sesión',
+	description: '',
+	robots: {
+		index: false,
+		follow: false,
+	},
+	viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    viewportFit: 'cover',
+  },
+	icons: {
+		shortcut: '/icon-512x512.png',
+	},
+}
 
 const Login = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -50,22 +67,6 @@ const Login = () => {
 
 	return (
 		<>
-			<Head>
-				<title>Exámenes 5ºA - Iniciar Sesión</title>
-				<meta
-					name='viewport'
-					content='width=device-width, initial-scale=1'
-				/>
-				<meta
-					name='robots'
-					content='nofollow,noindex'
-				/>
-				<link
-					rel='icon'
-					href='/icon-512x512.png'
-				/>
-			</Head>
-
 			<main className={styles.container}>
 				<h1>Iniciar Sesión</h1>
 				<form onSubmit={auth}>

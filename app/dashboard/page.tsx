@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Head from 'next/head';
 import { Toaster, toast } from 'sonner';
 
 import { supabase } from '@/lib/supabaseClient';
@@ -10,6 +9,7 @@ import AddExamDialog from './components/AddExamDialog';
 import EditExamDialog from './components/EditExamDialog';
 import { syncDate } from '@/lib/syncDate';
 import { EXAMS_TABLE } from '@/keys/keys';
+import { Metadata } from 'next';
 
 type exam = {
 	id: number;
@@ -21,6 +21,18 @@ type exam = {
 type examProps = {
 	examsDB: exam[];
 };
+
+export const metadata: Metadata = {
+	title: 'Exámenes 5ºA - Panel de Control',
+	icons: {
+		shortcut: '/icon-512x512.png',
+	},
+	viewport: {
+		width: 'device-width',
+		initialScale: 1,
+		viewportFit: 'cover',
+	},
+}
 
 const Dashboard = ({ examsDB }: examProps) => {
 	const [addExamDialog, setAddExamDialog] = useState(false);
@@ -49,18 +61,6 @@ const Dashboard = ({ examsDB }: examProps) => {
 
 	return (
 		<>
-			<Head>
-				<title>Exámenes 5ºA - Panel de Control</title>
-				<meta
-					name='viewport'
-					content='width=device-width, initial-scale=1'
-				/>
-				<link
-					rel='icon'
-					href='/icon-512x512.png'
-				/>
-			</Head>
-
 			<main className={styles.container}>
 				<h1>Panel de Control</h1>
 
