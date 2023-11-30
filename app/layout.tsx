@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     shortcut: '/icon-512x512.png',
     apple: '/icon-512x512.png',
   },
+  metadataBase: new URL('https://examenes-5to.vercel.app/'),
   robots: {
     index: true,
     follow: true,

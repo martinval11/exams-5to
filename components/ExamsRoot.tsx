@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Toaster, toast } from 'sonner';
 import { getAuth, signInAnonymously } from 'firebase/auth';
 import { getToken, onMessage } from 'firebase/messaging';
+import { useEffect, useState } from 'react';
+import { Toaster, toast } from 'sonner';
 
+import { syncDate } from '@/lib/syncDate';
 import { messaging } from '../db/firebase';
 import styles from './style.module.css';
-import { syncDate } from '@/lib/syncDate';
 
 type exam = {
 	id: number;
@@ -16,11 +16,7 @@ type exam = {
 	date: string;
 };
 
-type examProps = {
-	examsDB: exam[];
-};
-
-const ExamsRoot = ({ examsDB }: examProps) => {
+const ExamsRoot = ({ examsDB }: { examsDB: exam[] }) => {
 	const [exams] = useState<exam[]>(examsDB);
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [messagesActivated, setMessagesActivated] = useState(false);
@@ -44,8 +40,7 @@ const ExamsRoot = ({ examsDB }: examProps) => {
 		}
 
 		const token = await getToken(messaging, {
-			vapidKey:
-				'BM1V4ir72Km1eI3AFasKofEKi8M169EB8W9Gf5UGaNHDWQL7LS7cEs_UItFx0hnBnYu1S2YNKhMc5dOrO_7h2q8',
+			vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY ?? '',
 		}).catch((error) => {
 			// This error only occurs when the page is loaded for the first time.
 			throw new Error(error.message);
@@ -53,6 +48,7 @@ const ExamsRoot = ({ examsDB }: examProps) => {
 
 		if (token) {
 			setMessagesActivated(true);
+			console.log(token)
 			return;
 		}
 		return;

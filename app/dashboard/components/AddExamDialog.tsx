@@ -1,4 +1,4 @@
-import { useState, useRef, MouseEventHandler, FormEvent } from 'react';
+import { useState, MouseEventHandler, FormEvent } from 'react';
 
 import styles from './style.module.css';
 import { supabase } from '@/lib/supabaseClient';
@@ -16,28 +16,23 @@ const AddExamDialog = ({
 	onCancelDialog,
 }: AddExamDialogProps) => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [examDate, setExamDate] = useState('');
-
-	const examTitleRef = useRef<HTMLInputElement>(null);
-	const examAssignaturesRef = useRef<HTMLInputElement>(null);
 
 	const addExam = async (event: FormEvent) => {
 		event.preventDefault();
-		const formData = new FormData(event.currentTarget as HTMLFormElement);
-		console.log(formData)
-		
-		/*
 		setIsLoading(true);
+		
+		const form = new FormData(event.currentTarget as HTMLFormElement);
+		const entries = Array.from(form.entries());
+		
+		const exam = {
+			title: entries[0][1],
+			assignatures: entries[1][1],
+			date: entries[2][1],
+		};
 
 		const { error } = await supabase
 			.from(EXAMS_TABLE)
-			.insert([
-				{
-					title: examTitleRef?.current?.value,
-					assignatures: examAssignaturesRef?.current?.value,
-					date: examDate,
-				},
-			])
+			.insert(exam)
 			.select();
 
 		if (error) {
@@ -49,7 +44,6 @@ const AddExamDialog = ({
 		setIsLoading(false);
 
 		onFinish();
-		*/
 	};
 
 	return (
@@ -91,8 +85,6 @@ const AddExamDialog = ({
 						<span>Fecha del examen</span>
 						<input
 							type='date'
-							value={examDate}
-							onChange={(e) => setExamDate(e.target.value)}
 							name='examDate'
 							required
 						/>

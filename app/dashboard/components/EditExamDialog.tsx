@@ -29,22 +29,23 @@ const EditExamDialog = ({
 	parentCallback,
 }: EditExamDialogProps) => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [editExamDate, setEditExamDate] = useState(values?.date);
-
-	const editExamTitleRef = useRef<HTMLInputElement>(null);
-	const editExamAssignaturesRef = useRef<HTMLInputElement>(null);
 
 	const addEditedExam = async (event: FormEvent) => {
 		event.preventDefault();
 		setIsLoading(true);
 
+		const form = new FormData(event.currentTarget as HTMLFormElement);
+		const entries = Array.from(form.entries());
+		
+		const exam = {
+			title: entries[0][1],
+			assignatures: entries[1][1],
+			date: entries[2][1],
+		};
+
 		const { data, error } = await supabase
 			.from(EXAMS_TABLE)
-			.update({
-				title: editExamTitleRef?.current?.value,
-				assignatures: editExamAssignaturesRef?.current?.value,
-				date: editExamDate,
-			})
+			.update(exam)
 			.eq('id', values.id)
 			.select();
 
@@ -83,7 +84,7 @@ const EditExamDialog = ({
 							type='text'
 							placeholder='Título del Examen'
 							defaultValue={values?.title}
-							ref={editExamTitleRef}
+							name='examTitle'
 							required
 						/>
 					</label>
@@ -94,7 +95,7 @@ const EditExamDialog = ({
 							type='text'
 							placeholder='Ej: Tema 1, Tema 2, Tema 3...'
 							defaultValue={values?.assignatures}
-							ref={editExamAssignaturesRef}
+							name='examAssignatures'
 							required
 						/>
 					</label>
@@ -103,8 +104,8 @@ const EditExamDialog = ({
 						<span>Fecha del examen</span>
 						<input
 							type='date'
-							value={editExamDate}
-							onChange={(e) => setEditExamDate(e.target.value)}
+							defaultValue={values?.date}
+							name='examDate'
 							required
 						/>
 					</label>
