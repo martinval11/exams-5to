@@ -1,15 +1,15 @@
 <div style="text-align:center;">
 <img src="https://github.com/martinval11/exams-5to/blob/main/public/icon-512x512.png?raw=true" width="150" height="150">
 
-# Exams 5to
-School Exams for 5ºA
+# Exámenes 5to
+Exámenes escolares para 5to A
 </div>
 
-Languages Available:
-- [English](README.md)
+Idiomas Disponibles:
+- [Inglés](README.md)
 - [Español](README.es.md)
 
-## Setup
+## ¿Cómo arrancar el proyecto?
 
 ```sh
 git clone https://github.com/martinval11/exams-5to
@@ -17,7 +17,7 @@ cd exams-5to
 bun install
 ```
 
-Create a `.env.local` file and put the following code:
+Creá un archivo `.env.local` y coloca el siguiente código:
 
 ```
 NEXT_PUBLIC_EXAMS_TABLE_DEV= {{ TABLE_OF_YOUR_SUPABASE_DB }}
@@ -27,7 +27,7 @@ NEXT_PUBLIC_SECRET_KEY= {{ SECRET KEY FOR crypto.js }}
 NEXT_PUBLIC_FIREBASE_VAPID_KEY= {{ FIREBASE MESSAGING VAPID KEY FOR NOTIFICATIONS }}
 ```
 
-Now run:
+Ahora ejecuta:
 ```
 $ bun dev
 
@@ -39,5 +39,5 @@ $ bun dev
 ```
 
 ## Scripts
-- `bun dev` - Starts development environment
-- `bun build` - Build for production
+- `bun dev` - Inicia el entorno de desarrollo
+- `bun build` - Crea el `bundle` para producción
