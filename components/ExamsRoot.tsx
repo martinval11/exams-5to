@@ -48,7 +48,6 @@ const ExamsRoot = ({ examsDB }: { examsDB: exam[] }) => {
 
 		if (token) {
 			setMessagesActivated(true);
-			console.log(token)
 			return;
 		}
 		return;

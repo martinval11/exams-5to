@@ -12,6 +12,8 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 }
 
+export const dynamic = 'force-dynamic';
+
 const Home = async () => {
   const exams = await getExams();
 
