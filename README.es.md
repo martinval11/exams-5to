@@ -38,6 +38,16 @@ $ bun dev
  ✓ Ready in 7.7s
 ```
 
+## Setup para testing
+Este proyecto utiliza Cypress, necesitas crear un archivo `cypress.env.json` y colocar el siguiente código:
+```json
+{
+	"LOGIN_USERNAME": "Username",
+	"LOGIN_PASSWORD": "Password"
+}
+```
+Esto crea dos variables de entorno: `LOGIN_USERNAME` y `LOGIN_PASSWORD`. Estos son necesarios para testear la página `/login`.
+
 ## Scripts
 - `bun dev` - Inicia el entorno de desarrollo
 - `bun build` - Crea el `bundle` para producción
