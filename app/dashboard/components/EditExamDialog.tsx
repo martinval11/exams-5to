@@ -1,8 +1,8 @@
-import { useState, useRef, MouseEventHandler, FormEvent } from 'react';
+import { FormEvent, MouseEventHandler, useState } from 'react';
 
-import styles from './style.module.css';
-import { supabase } from '@/lib/supabaseClient';
 import { EXAMS_TABLE } from '@/keys/keys';
+import { supabase } from '@/lib/supabaseClient';
+import styles from './style.module.css';
 
 type exam = {
 	id: number;
@@ -36,7 +36,7 @@ const EditExamDialog = ({
 
 		const form = new FormData(event.currentTarget as HTMLFormElement);
 		const entries = Array.from(form.entries());
-		
+
 		const exam = {
 			title: entries[0][1],
 			assignatures: entries[1][1],
@@ -85,6 +85,7 @@ const EditExamDialog = ({
 							placeholder='Título del Examen'
 							defaultValue={values?.title}
 							name='examTitle'
+							data-cy='editExamTitle'
 							required
 						/>
 					</label>
@@ -96,6 +97,7 @@ const EditExamDialog = ({
 							placeholder='Ej: Tema 1, Tema 2, Tema 3...'
 							defaultValue={values?.assignatures}
 							name='examAssignatures'
+							data-cy='editExamAssignatures'
 							required
 						/>
 					</label>
@@ -106,13 +108,15 @@ const EditExamDialog = ({
 							type='date'
 							defaultValue={values?.date}
 							name='examDate'
+							data-cy='editExamDate'
 							required
 						/>
 					</label>
 
 					<button
 						type='submit'
-						aria-busy={isLoading}>
+						aria-busy={isLoading}
+						data-cy='submitEditedExam'>
 						{isLoading ? 'Publicando...' : 'Publicar'}
 					</button>
 				</form>

@@ -41,3 +41,4 @@ $ bun dev
 ## Scripts
 - `bun dev` - Inicia el entorno de desarrollo
 - `bun build` - Crea el `bundle` para producción
+- `bun run test` - Ejecuta los tests con Cypress

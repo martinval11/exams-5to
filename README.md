@@ -41,3 +41,4 @@ $ bun dev
 ## Scripts
 - `bun dev` - Starts development environment
 - `bun build` - Build for production
+- `bun run test` - Run tests with Cypress

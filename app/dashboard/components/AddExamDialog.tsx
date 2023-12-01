@@ -1,8 +1,8 @@
-import { useState, MouseEventHandler, FormEvent } from 'react';
+import { FormEvent, MouseEventHandler, useState } from 'react';
 
-import styles from './style.module.css';
-import { supabase } from '@/lib/supabaseClient';
 import { EXAMS_TABLE } from '@/keys/keys';
+import { supabase } from '@/lib/supabaseClient';
+import styles from './style.module.css';
 
 type AddExamDialogProps = {
 	onError: () => void;
@@ -20,10 +20,10 @@ const AddExamDialog = ({
 	const addExam = async (event: FormEvent) => {
 		event.preventDefault();
 		setIsLoading(true);
-		
+
 		const form = new FormData(event.currentTarget as HTMLFormElement);
 		const entries = Array.from(form.entries());
-		
+
 		const exam = {
 			title: entries[0][1],
 			assignatures: entries[1][1],
@@ -67,6 +67,7 @@ const AddExamDialog = ({
 							type='text'
 							placeholder='Título del Examen'
 							name='examTitle'
+							data-cy='examTitle'
 							required
 						/>
 					</label>
@@ -77,6 +78,7 @@ const AddExamDialog = ({
 							type='text'
 							placeholder='Ej: Tema 1, Tema 2, Tema 3...'
 							name='examAssignatures'
+							data-cy='examAssignatures'
 							required
 						/>
 					</label>
@@ -86,13 +88,15 @@ const AddExamDialog = ({
 						<input
 							type='date'
 							name='examDate'
+							data-cy='examDate'
 							required
 						/>
 					</label>
 
 					<button
 						type='submit'
-						aria-busy={isLoading}>
+						aria-busy={isLoading}
+						data-cy='submitExam'>
 						{isLoading ? 'Publicando...' : 'Publicar'}
 					</button>
 				</form>

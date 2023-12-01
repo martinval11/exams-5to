@@ -1,15 +1,15 @@
-import { useState, MouseEventHandler } from 'react';
+import { MouseEventHandler, useState } from 'react';
 
+import { EXAMS_TABLE } from '@/keys/keys';
 import { supabase } from '@/lib/supabaseClient';
 import styles from './style.module.css';
-import { EXAMS_TABLE } from '@/keys/keys';
 
 type DeleteExamDialogProps = {
 	onError: () => void;
 	id: string | number;
 	onFinish: () => void;
 	onCancelDialog: MouseEventHandler<HTMLButtonElement>;
-}
+};
 
 const DeleteExamDialog = ({
 	onError,
@@ -52,7 +52,8 @@ const DeleteExamDialog = ({
 					<button
 						type='button'
 						onClick={deleteExam}
-						aria-busy={isLoading}>
+						aria-busy={isLoading}
+						data-cy='confirmDeleteButton'>
 						{isLoading ? 'Borrando...' : 'Borrar'}
 					</button>
 				</footer>

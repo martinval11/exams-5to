@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Toaster, toast } from 'sonner';
 
 import { supabase } from '@/lib/supabaseClient';
 import styles from '../style.module.css';
 
-import DeleteExamDialog from '../../components/DeleteExamDialog';
-import AddExamDialog from '../../components/AddExamDialog';
-import EditExamDialog from '../../components/EditExamDialog';
-import { syncDate } from '@/lib/syncDate';
 import { EXAMS_TABLE } from '@/keys/keys';
+import { syncDate } from '@/lib/syncDate';
+import AddExamDialog from '../../components/AddExamDialog';
+import DeleteExamDialog from '../../components/DeleteExamDialog';
+import EditExamDialog from '../../components/EditExamDialog';
 
 type exam = {
 	id: number;
@@ -38,17 +38,6 @@ const ExamsDashboard = ({ examsDB }: examProps) => {
 	});
 
 	const [deleteIdButton, setDeleteIdButton] = useState('');
-
-	/* TODO -> Convert this to server side equivalent
-	useEffect(() => {
-		const token = sessionStorage.getItem('auth');
-
-		if (token !== 'true') {
-			window.location.href = '/login';
-			return;
-		}
-	}, []);
-	*/
 
 	return (
 		<>
@@ -124,7 +113,8 @@ const ExamsDashboard = ({ examsDB }: examProps) => {
 				<section className='exams'>
 					<button
 						type='button'
-						onClick={() => setAddExamDialog(true)}>
+						onClick={() => setAddExamDialog(true)}
+						data-cy='addExamButton'>
 						Añadir examen
 					</button>
 
@@ -152,7 +142,8 @@ const ExamsDashboard = ({ examsDB }: examProps) => {
 									<td>
 										<details
 											role='list'
-											className={styles.actionsButtonContainer}>
+											className={styles.actionsButtonContainer}
+											data-cy='actionsButton'>
 											<summary
 												aria-haspopup='listbox'
 												role='button'>
@@ -162,6 +153,7 @@ const ExamsDashboard = ({ examsDB }: examProps) => {
 												<button
 													type='button'
 													id={`${exam.id}`}
+													data-cy='editExamButton'
 													onClick={() => {
 														setEditValues({
 															id: exam.id,
@@ -176,6 +168,7 @@ const ExamsDashboard = ({ examsDB }: examProps) => {
 												<button
 													type='button'
 													id={`${exam.id}`}
+													data-cy='deleteExamButton'
 													onClick={(event) => {
 														const button = event.target as HTMLButtonElement;
 														setDeleteIdButton(button.id);

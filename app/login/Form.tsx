@@ -9,6 +9,7 @@ const Form = () => {
           type='text'
           placeholder='Tu nombre de usuario'
           name='username'
+          data-cy='username'
           required
         />
       </label>
@@ -19,11 +20,12 @@ const Form = () => {
           type='password'
           placeholder='Tu contraseña'
           name='password'
+          data-cy='password'
           required
         />
       </label>
 
-      <button type='submit'>Iniciar Sesión</button>
+      <button type='submit' data-cy='submit'>Iniciar Sesión</button>
     </form>
   );
 };
