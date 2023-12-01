@@ -42,8 +42,8 @@ $ bun dev
 Este proyecto utiliza Cypress, necesitas crear un archivo `cypress.env.json` y colocar el siguiente código:
 ```json
 {
-	"LOGIN_USERNAME": "Username",
-	"LOGIN_PASSWORD": "Password"
+  "LOGIN_USERNAME": "Username",
+  "LOGIN_PASSWORD": "Password"
 }
 ```
 Esto crea dos variables de entorno: `LOGIN_USERNAME` y `LOGIN_PASSWORD`. Estos son necesarios para testear la página `/login`.
