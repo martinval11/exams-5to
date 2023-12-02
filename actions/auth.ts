@@ -1,7 +1,7 @@
+'use server';
 import { decrypt } from '@/lib/decrypt';
+import { generateToken } from '@/lib/generateToken';
 import { supabase } from '@/lib/supabaseClient';
-import { randomUUID } from 'crypto';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 type user = {
@@ -9,8 +9,7 @@ type user = {
 	password: string;
 };
 
-export const auth = async (formData: FormData) => {
-	'use server';
+export const auth = async (prevState: any, formData: FormData) => {
 	const username = formData.get('username');
 	const password = formData.get('password');
 
@@ -29,9 +28,10 @@ export const auth = async (formData: FormData) => {
 	);
 
 	if (searchUser) {
-		cookies().set('token', randomUUID());
+		generateToken();
 		redirect('/dashboard');
 	} else {
-		redirect('/login/error');
+		return { message: 'Error' };
+		//redirect('/login/error');
 	}
 };

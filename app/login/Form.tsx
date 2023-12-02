@@ -1,8 +1,22 @@
+'use client';
+
 import { auth } from '@/actions/auth';
+import { useEffect } from 'react';
+import { useFormState } from 'react-dom';
+import { Toaster, toast } from 'sonner';
+import SubmitButton from './compoents/SubmitButton';
 
 const Form = () => {
+  const [error, formAction] = useFormState(auth, { message: '' });
+
+  useEffect(() => {
+    if (error.message) {
+      toast.error(error.message);
+    }
+  }, [error]);
+
   return (
-    <form action={auth}>
+    <form action={formAction}>
       <label>
         <span>Nombre de Usuario</span>
         <input
@@ -25,7 +39,9 @@ const Form = () => {
         />
       </label>
 
-      <button type='submit' data-cy='submit'>Iniciar Sesión</button>
+      <SubmitButton />
+
+      <Toaster richColors />
     </form>
   );
 };
