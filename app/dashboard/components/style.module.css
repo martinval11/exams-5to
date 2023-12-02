@@ -63,11 +63,6 @@
   width: 90px;
 }
 
-.actions li {
-  padding: 0 !important;
-  margin: 0;
-}
-
 .actions button {
   background: transparent;
   border: none;

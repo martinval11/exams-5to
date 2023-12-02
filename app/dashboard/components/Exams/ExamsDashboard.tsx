@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabaseClient';
 import styles from '../style.module.css';
 
 import { EXAMS_TABLE } from '@/keys/keys';
+import { sortedExamsByDate } from '@/lib/sortExamsByDate';
 import { syncDate } from '@/lib/syncDate';
 import AddExamDialog from '../../components/AddExamDialog';
 import DeleteExamDialog from '../../components/DeleteExamDialog';
@@ -23,7 +24,7 @@ type examProps = {
 	examsDB: exam[];
 };
 
-const ExamsDashboard = ({ examsDB }: examProps) => {
+const ExamsDashboard: React.FC<examProps> = ({ examsDB }) => {
 	const [addExamDialog, setAddExamDialog] = useState(false);
 	const [deleteExamDialog, setDeleteExamDialog] = useState(false);
 	const [editExamDialog, setEditExamDialog] = useState(false);
@@ -39,6 +40,16 @@ const ExamsDashboard = ({ examsDB }: examProps) => {
 
 	const [deleteIdButton, setDeleteIdButton] = useState('');
 
+	const displayError = () => {
+		toast.error('Algo salió mal');
+	};
+
+	const closeDialog = () => {
+		setAddExamDialog(false);
+		setDeleteExamDialog(false);
+		setEditExamDialog(false);
+	}
+
 	return (
 		<>
 			<main className={styles.container}>
@@ -46,49 +57,45 @@ const ExamsDashboard = ({ examsDB }: examProps) => {
 
 				{addExamDialog && (
 					<AddExamDialog
-						onError={() => toast.error('Algo salió mal')}
+						onError={displayError}
 						onFinish={async () => {
-							const { data: exams } = await supabase
-								.from(EXAMS_TABLE)
-								.select('*');
-							setAddExamDialog(false);
-							const sortedExamsByDate = exams?.sort(
-								(a, b) =>
-									new Date(a.date).getTime() - new Date(b.date).getTime()
-							);
-							setExams(sortedExamsByDate || []);
+							const { data: exams } = await supabase.from(EXAMS_TABLE).select('*');
+
+							const examsByDate = sortedExamsByDate(exams || []);
+							setExams(examsByDate);
+
+							closeDialog();
 							toast.success('Examen agregado con éxito');
 						}}
-						onCancelDialog={() => setAddExamDialog(false)}
+						onCancelDialog={closeDialog}
 					/>
 				)}
 
 				{deleteExamDialog && (
 					<DeleteExamDialog
-						onError={() => toast.error('Algo salió mal')}
+						onError={displayError}
 						id={deleteIdButton}
 						onFinish={async () => {
 							const { data: exams } = await supabase
 								.from(EXAMS_TABLE)
 								.select('*');
-							const sortedExamsByDate = exams?.sort(
-								(a, b) =>
-									new Date(a.date).getTime() - new Date(b.date).getTime()
-							);
-							setExams(sortedExamsByDate || []);
-							setDeleteExamDialog(false);
+
+							const examsByDate = sortedExamsByDate(exams || []);
+							setExams(examsByDate);
+
+							closeDialog();
 							toast.success('Examen borrado con éxito');
 						}}
-						onCancelDialog={() => setDeleteExamDialog(false)}
+						onCancelDialog={closeDialog}
 					/>
 				)}
 
 				{editExamDialog && (
 					<EditExamDialog
-						onError={() => toast.error('Algo salió mal')}
+						onError={displayError}
 						values={editValues}
 						onFinish={() => {
-							setEditExamDialog(false);
+							closeDialog();
 							toast.success('Los cambios se han subido correctamente');
 						}}
 						globalExams={exams}
@@ -99,18 +106,15 @@ const ExamsDashboard = ({ examsDB }: examProps) => {
 								assignatures: item.assignatures,
 								date: item.date,
 							}));
-							const sortedExamsByDate = examData.sort(
-								(a, b) =>
-									new Date(a.date).getTime() - new Date(b.date).getTime()
-							);
 
-							setExams(sortedExamsByDate);
+							const examsByDate = sortedExamsByDate(examData || []);
+							setExams(examsByDate);
 						}}
-						onCancelDialog={() => setEditExamDialog(false)}
+						onCancelDialog={closeDialog}
 					/>
 				)}
 
-				<section className='exams'>
+				<section>
 					<button
 						type='button'
 						onClick={() => setAddExamDialog(true)}
@@ -126,7 +130,7 @@ const ExamsDashboard = ({ examsDB }: examProps) => {
 								<th>Título</th>
 								<th>Temas</th>
 								<th>Fecha</th>
-								<th>{''}</th>
+								<th></th>
 							</tr>
 						</thead>
 
@@ -152,7 +156,7 @@ const ExamsDashboard = ({ examsDB }: examProps) => {
 											<ul className={styles.actions}>
 												<button
 													type='button'
-													id={`${exam.id}`}
+													id={exam.id.toString()}
 													data-cy='editExamButton'
 													onClick={() => {
 														setEditValues({
@@ -167,7 +171,7 @@ const ExamsDashboard = ({ examsDB }: examProps) => {
 												</button>
 												<button
 													type='button'
-													id={`${exam.id}`}
+													id={exam.id.toString()}
 													data-cy='deleteExamButton'
 													onClick={(event) => {
 														const button = event.target as HTMLButtonElement;

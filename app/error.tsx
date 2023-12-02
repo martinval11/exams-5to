@@ -15,9 +15,10 @@ const Error = ({
 
   return (
     <main className="error">
-      <h2>Something went wrong!</h2>
+      <h2>Algo salió mal</h2>
+      <p>Intenta recargar la pagina o pulsa el botón para intentar de nuevo</p>
       <button onClick={() => reset()}>
-        Try again
+        Intentar de nuevo
       </button>
     </main>
   );
